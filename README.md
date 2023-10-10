@@ -7,7 +7,7 @@ The Microsoft Planetary Computer Data Catalog includes petabytes of environmenta
 
 ## Getting started
 
-1. Obtain an [Azure account](https://azure.microsoft.com/en-in/get-started/welcome-to-azure)
+1. Obtain an [Microsoft Azure account](https://azure.microsoft.com/en-in/get-started/welcome-to-azure)
 2. Follow steps on our [Getting Started with ArcGIS for Microsoft Planetary Computer](https://www.esri.com/content/dam/esrisites/en-us/media/manuals/getting-started-arcgis-mpc.pdf) guide
 
 ## Resources
