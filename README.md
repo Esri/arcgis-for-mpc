@@ -13,6 +13,7 @@ The Microsoft Planetary Computer Data Catalog includes petabytes of environmenta
 ## Resources
 
 * [FAQ](https://www.esri.com/arcgis-blog/products/arcgis/imagery/arcgis-for-microsoft-planetary-computer-faq/)
+* [Wiki](https://github.com/ArcGIS/arcgis-for-mpc/wiki)
 
 ## Issues
 
