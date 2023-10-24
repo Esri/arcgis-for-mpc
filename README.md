@@ -1,14 +1,15 @@
 # ArcGIS for Microsoft Planetary Computer
 
-ArcGIS for Microsoft Planetary Computer is an offering from Esri that brings hundreds of ready-to-use analysis tools from ArcGIS to the [Microsoft Planetary Computer](https://planetarycomputer.microsoft.com/) so you can observe and monitor the planet.
+ArcGIS for Microsoft Planetary Computer (AMPC) is an offering from Esri that brings hundreds of ready-to-use analysis tools from ArcGIS to the [Microsoft Planetary Computer (MPC)](https://planetarycomputer.microsoft.com/) so you can observe and monitor the planet.
 It provides direct access to the [Microsoft Planetary Computer Data Catalog](https://planetarycomputer.microsoft.com/catalog) within the ArcGIS Pro interface so you can immediately start analyzing petabytes worth of data.
 
 The Microsoft Planetary Computer Data Catalog includes petabytes of environmental monitoring data, in consistent, analysis-ready formats. The catalog includes commonly used [imagery](https://planetarycomputer.microsoft.com/catalog#Imagery), [DEMs](https://planetarycomputer.microsoft.com/catalog#DEMs) and a large number of derived and/or observed environmental data sets.
 
 ## Getting started
 
-1. Obtain an [Microsoft Azure account](https://azure.microsoft.com/en-in/get-started/welcome-to-azure)
+1. Obtain a [Microsoft Azure account](https://azure.microsoft.com/en-in/get-started/welcome-to-azure)
 2. Follow steps on our [Getting Started with ArcGIS for Microsoft Planetary Computer](https://www.esri.com/content/dam/esrisites/en-us/media/manuals/getting-started-arcgis-mpc.pdf) guide
+3. After creating a virtual machine you can start working with data on MPC through [ArcGIS Pro UI](https://github.com/ArcGIS/arcgis-for-mpc/wiki/Accessing-data-on-Microsoft-Planetary-Computer-through-STAC-UX-in-Pro) or [Python](https://github.com/ArcGIS/arcgis-for-mpc/wiki/Accessing-data-on-Microsoft-Planetary-Computer-through-STAC-in-arcpy)
 
 ## Resources
 
