@@ -32,7 +32,7 @@ template_map = {
     "Water Vapor": tifs[-3:-2],
 }
 
-acs_file = r"C:\AMPC_Resources\ACS_Files\esrims_pc_sentinel2-l2a.acs"
+acs_file = r"C:\AMPC_Resources\ACS_Files\esrims_pc_sentinel-2-l2a.acs"
 
 get_asset_file = lambda item, asset_key: os.path.normpath(
     acs_file + item["assets"][asset_key]["href"][57:]
