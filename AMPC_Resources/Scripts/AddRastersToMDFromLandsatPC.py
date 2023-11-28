@@ -19,7 +19,7 @@ level1_nir2_band = "nir09"
 
 pixel_type_map = {"uint16": "U16", "uint8": "U8"}
 
-acs_file = r"C:\AMPC_Resources\ACS_Files\esrims_pc_landsat-c2.acs"
+acs_file = r"C:\AMPC_Resources\ACS_Files\esrims_pc_landsat-c2-l2.acs"
 
 get_asset_file = lambda item, asset_key: os.path.normpath(
     acs_file + item["assets"][asset_key]["href"][54:]
