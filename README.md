@@ -8,12 +8,12 @@ The Microsoft Planetary Computer Data Catalog includes petabytes of environmenta
 ## Getting started
 
 1. Obtain a [Microsoft Azure account](https://azure.microsoft.com/en-in/get-started/welcome-to-azure)
-2. Follow steps on our [Getting Started with ArcGIS for Microsoft Planetary Computer](https://www.esri.com/content/dam/esrisites/en-us/media/manuals/getting-started-arcgis-mpc.pdf) guide
+2. Follow steps on our [Getting Started with ArcGIS for Microsoft Planetary Computer](https://doc.arcgis.com/en/microsoft-planetary-computer/latest/get-started/configure-arcgis-for-microsoft-planetary-computer.htm) guide
 3. Start working with data on MPC through [ArcGIS Pro UI](https://github.com/ArcGIS/arcgis-for-mpc/wiki/Accessing-data-on-Microsoft-Planetary-Computer-through-STAC-UX-in-Pro) or [Python](https://github.com/ArcGIS/arcgis-for-mpc/wiki/Accessing-data-on-Microsoft-Planetary-Computer-through-STAC-API-in-arcpy)
 
 ## Resources
 
-* [FAQ](https://www.esri.com/arcgis-blog/products/arcgis/imagery/arcgis-for-microsoft-planetary-computer-faq/)
+* [FAQ](https://doc.arcgis.com/en/microsoft-planetary-computer/latest/get-started/faq-arcgis-microsoft-planetary-computer.htm)
 * [Wiki](https://github.com/ArcGIS/arcgis-for-mpc/wiki)
 
 ## Issues
