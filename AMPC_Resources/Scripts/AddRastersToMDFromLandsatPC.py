@@ -1,19 +1,21 @@
-/* Copyright 2023 Esri
- *
- * Licensed under the Apache License Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-     
+﻿"""
+Copyright 2023 Esri
+
+Licensed under the Apache License Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+"""
+
 import os
+import json
 import csv
 import requests
 import arcpy
@@ -143,6 +145,12 @@ def query_stac_api(collection, from_datetime, to_datetime, bbox, props_query, li
         field = "eo:cloud_cover" if row[0].lower() == "cloudcover" else row[0]
         op = operators[row[1].lower()] if row[1].lower() in operators else row[1]
         val = row[2]
+        try:
+            decoded_val = json.loads(val)
+            if isinstance(decoded_val, list):
+                val = decoded_val
+        except json.JSONDecodeError:
+            pass
         op_val = {op: val}
         row_filter = {field: op_val}
         if field in query_filter:
@@ -225,9 +233,7 @@ def add_rasters_to_md(in_mosaic, stac_items, processing_template):
         sr_bands = (
             sr_tifs
             if oli_tirs
-            else sr_tifs[1:]
-            if level_2_product
-            else sr_tifs[2:5] + [level1_nir2_band]
+            else sr_tifs[1:] if level_2_product else sr_tifs[2:5] + [level1_nir2_band]
         )
         st_band = "lwir11" if oli_tirs else "lwir"
 

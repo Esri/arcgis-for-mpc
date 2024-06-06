@@ -1,4 +1,4 @@
-﻿"""
+"""
 Copyright 2023 Esri
 
 Licensed under the Apache License Version 2.0 (the "License");
@@ -20,57 +20,29 @@ import csv
 import requests
 import arcpy
 
-tifs = [
-    "B01",
-    "B02",
-    "B03",
-    "B04",
-    "B05",
-    "B06",
-    "B07",
-    "B08",
-    "B8A",
-    "B09",
-    "B11",
-    "B12",
-    "AOT",
-    "WVP",
-    "SCL",
-    "visual",
-]
-
-template_map = {
-    "Aerosol Optical Thickness": tifs[-4:-3],
-    "BOA Reflectance": tifs[:-4],
-    "BOA Reflectance-10m": tifs[1:4] + tifs[7:8],
-    "Multiband": tifs[:-1],
-    "SCL-20m": tifs[-2:-1],
-    "True Color": tifs[-1:],
-    "Water Vapor": tifs[-3:-2],
-}
-
-acs_file = r"C:\AMPC_Resources\ACS_Files\esrims_pc_sentinel-2-l2a.acs"
+acs_file = r"C:\AMPC_Resources\ACS_Files\esrims_pc_sentinel-1-grd.acs"
 
 get_asset_file = lambda item, asset_key: os.path.normpath(
-    acs_file + item["assets"][asset_key]["href"][57:]
+    acs_file + item["assets"][asset_key]["href"][52:]
 )
 
 
-def get_row(item, asset_key, apply_template, all_bands):
+def get_row(item, asset_key):
     row = []
     item_asset = item["assets"][asset_key]
     row.append(get_asset_file(item, asset_key))
     props = item["properties"]
-    row.extend(item_asset["proj:bbox"])
-    row.extend(item_asset["proj:shape"][::-1])
-    row.append(len(item_asset["eo:bands"]) if "eo:bands" in item_asset else 1)
-    row.append("U16" if asset_key not in tifs[-2:] else "U8")
-    row.append(props["proj:epsg"])
+    row.extend(item["bbox"])
+    row.extend(props["s1:shape"][::-1])
+    row.append(1)
+    row.append("U16")
+    row.append(4326)
     row.append(f"{item['id']}-{asset_key}")
     row.append(props["datetime"])
-    row.append(apply_template)
-    product_name = f"{item['id']}_{apply_template}" if all_bands else item["id"]
-    row.append(product_name)
+    row.append(props["sar:product_type"])
+    row.append(props["sar:instrument_mode"])
+    row.append(" ".join(props["sar:polarizations"]))
+    row.append(item["id"])
     return row
 
 
@@ -114,7 +86,7 @@ def get_items(query, get_all_items):
 def query_stac_api(from_datetime, to_datetime, bbox, props_query, limit):
     query = {}
 
-    query["collections"] = ["sentinel-2-l2a"]
+    query["collections"] = ["sentinel-1-grd"]
 
     datetime = (
         from_datetime.strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -210,7 +182,7 @@ def query_stac_api(from_datetime, to_datetime, bbox, props_query, limit):
     return items
 
 
-def add_rasters_to_md(in_mosaic, stac_items, processing_template):
+def add_rasters_to_md(in_mosaic, stac_items):
     fields = [
         "Raster",
         "xMin",
@@ -225,32 +197,25 @@ def add_rasters_to_md(in_mosaic, stac_items, processing_template):
         "Name",
         "AcquisitionDate",
         "ProductName",
+        "BeamMode",
+        "Polarization",
         "GroupName",
     ]
 
-    all_bands = True if processing_template.upper() == "ALL BANDS" else False
-
-    all_templates = list(template_map.keys()) if all_bands else [processing_template]
-
     rows = [
-        get_row(item, asset, apply_template, all_bands)
+        get_row(item, asset.lower())
         for item in stac_items
-        for apply_template in all_templates
-        for asset in template_map[apply_template]
+        for asset in item["properties"]["sar:polarizations"]
     ]
 
-    input_data = os.path.abspath("sentinel_2_table.csv")
+    input_data = os.path.abspath("sentinel_1_table.csv")
 
     with open(input_data, mode="w", newline="") as table_file:
         csv_writer = csv.writer(table_file)
         csv_writer.writerow(fields)
         csv_writer.writerows(rows)
 
-    raster_type = (
-        r"C:\AMPC_Resources\Raster_Types\Table_composite.art.xml"
-        if all_bands or len(template_map[processing_template]) > 1
-        else "Table / Raster Catalog"
-    )
+    raster_type = r"C:\AMPC_Resources\Raster_Types\Table_composite.art.xml"
 
     arcpy.management.AddRastersToMosaicDataset(
         in_mosaic_dataset=in_mosaic,
@@ -271,7 +236,6 @@ if __name__ == "__main__":
     bbox = arcpy.GetParameter(3)
     props_query = arcpy.GetParameter(4)
     limit = arcpy.GetParameter(5)
-    processing_template = arcpy.GetParameter(6)
 
     stac_items = query_stac_api(from_datetime, to_datetime, bbox, props_query, limit)
     project = arcpy.mp.ArcGISProject("CURRENT")
@@ -280,7 +244,7 @@ if __name__ == "__main__":
         lyr.dataSource for lyr in active_map.listLayers() if hasattr(lyr, "dataSource")
     ]
 
-    add_rasters_to_md(in_mosaic, stac_items, processing_template)
+    add_rasters_to_md(in_mosaic, stac_items)
     arcpy.AddMessage(arcpy.GetMessages())
 
     if not hasattr(in_mosaic, "dataSource") and str(in_mosaic) not in active_layers:
