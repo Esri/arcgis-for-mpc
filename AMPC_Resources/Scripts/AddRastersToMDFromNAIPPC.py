@@ -1,4 +1,4 @@
-'''
+"""
 Copyright 2023 Esri
 
 Licensed under the Apache License Version 2.0 (the "License");
@@ -12,9 +12,10 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-'''
-     
+"""
+  
 import os
+import json
 import csv
 import requests
 import arcpy
@@ -113,6 +114,12 @@ def query_stac_api(from_datetime, to_datetime, bbox, props_query, limit):
         field = "eo:cloud_cover" if row[0].lower() == "cloudcover" else row[0]
         op = operators[row[1].lower()] if row[1].lower() in operators else row[1]
         val = row[2]
+        try:
+            decoded_val = json.loads(val)
+            if isinstance(decoded_val, list):
+                val = decoded_val
+        except json.JSONDecodeError:
+            pass
         op_val = {op: val}
         row_filter = {field: op_val}
         if field in query_filter:
