@@ -13,18 +13,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-  
+
 import os
 import json
 import csv
 import requests
 import arcpy
 
+acs_file = "C:\AMPC_Resources\ACS_Files\esrims_pc_naip.acs"
+
+get_asset_file = lambda image: os.path.normpath(acs_file + image[45:])
+
 
 def get_row(item):
     row = []
     image = item["assets"]["image"]
-    row.append(f'/vsicurl/{image["href"]}')
+    row.append(get_asset_file(image["href"]))
     props = item["properties"]
     row.extend(props["proj:bbox"])
     row.extend(props["proj:shape"][::-1])
