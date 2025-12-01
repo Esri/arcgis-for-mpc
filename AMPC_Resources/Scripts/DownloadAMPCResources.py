@@ -21,7 +21,7 @@ https://github.com/ArcGIS/arcgis-for-mpc
 import arcpy
 import requests, zipfile, io, shutil
 
-url = "https://links.esri.com/ampc_resources_34"
+url = "https://links.esri.com/ampc_resources_36"
 
 
 def download_ampc_resources(output_folder):
